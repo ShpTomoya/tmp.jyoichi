@@ -218,7 +218,7 @@ section {
   height: 320px;
   margin: 0 auto;
   margin-bottom: 64px;
-  background: url(/img/about_ourvision.png) no-repeat;
+  background: url(../img/about_ourvision.png) no-repeat;
   position: relative;
 }
 .vision_content {
@@ -236,7 +236,7 @@ section {
 }
 .story_bg {
   padding:1px 0;
-  background:url(/img/story_bg.jpg) center top no-repeat;
+  background:url(../img/story_bg.jpg) center top no-repeat;
   background-size: cover;
   position: relative;
 }
@@ -744,11 +744,11 @@ MENU・PRICE
 .product li:nth-child(5){
   width: calc((100% - 32px) / 3);
 }
-.product li:nth-child(1) { background: url(/img/product_japanese.png) center center no-repeat; }
-.product li:nth-child(2) { background: url(/img/product_oli.png) center center no-repeat; }
-.product li:nth-child(3) { background: url(/img/product_basicskincare.png) center center no-repeat; }
-.product li:nth-child(4) { background: url(/img/product_tea.png) center center no-repeat; }
-.product li:nth-child(5) { background: url(/img/product_supplement.png) center center no-repeat; }
+.product li:nth-child(1) { background: url(../img/product_japanese.png) center center no-repeat; }
+.product li:nth-child(2) { background: url(../img/product_oli.png) center center no-repeat; }
+.product li:nth-child(3) { background: url(../img/product_basicskincare.png) center center no-repeat; }
+.product li:nth-child(4) { background: url(../img/product_tea.png) center center no-repeat; }
+.product li:nth-child(5) { background: url(../img/product_supplement.png) center center no-repeat; }
 
 .other {
   margin-bottom: 32px;
