@@ -1,11 +1,14 @@
 $(function(){
   var logoSizeFlg = 0;
-  $(window).on('scroll', scrollEventHandler);
+  $(window)
+    .on('scroll', scrollEventHandler)
+    .on('load', rewirteURL);
   $(document)
     .on('click', '.staff_bt', staffButton)
     .on('click', '.course_bt', courseButton)
     .on('click', '.modal-close', modalClose)
     .on('click', '.modal-content-bg', modalClose)
+    .on('click', '.sp-menu--lang', spMenuLang)
     .on('click', '.sp-menu', spMenu)
     .on('click', '.sp-menu-modal-shadow', spMenuClose)
     .on('click', '.sp-menu-modal', function(e){
@@ -14,35 +17,42 @@ $(function(){
 
   var scrollAnimFlg = 0;
   function scrollEventHandler(){
+    var scroll = $(window).scrollTop();
+
+    if (scroll > 200) {
+      $('.footer-reservation').addClass('display-block');
+    } else {
+      $('.footer-reservation').removeClass('display-block');
+    }
+
     var ua = navigator.userAgent;
     if (ua.indexOf('iPhone') > 0 || ua.indexOf('Android') > 0 && ua.indexOf('Mobile') > 0 || ua.indexOf('iPad') > 0 || ua.indexOf('Android') > 0) {
       return;
     }
     if(scrollAnimFlg == 1){ return }
     scrollAnimFlg = 1;
-    var scroll = $(window).scrollTop();
     //logo setting
-    if(scroll > 160){
-      if(logoSizeFlg == 0){
-        $('.logo img').css({ 'width': '103px' }).on('transitionend',function(){
-          $('.logo img').off();
-          scrollAnimFlg = 0;
-        });
-        logoSizeFlg = 1;
-      } else {
-        scrollAnimFlg = 0;
-      }
-    } else {
-      if(logoSizeFlg == 1){
-        $('.logo img').css({ 'width': '206px' }).on('transitionend',function(){
-          $('.logo img').off();
-          scrollAnimFlg = 0;
-        });
-        logoSizeFlg = 0;
-      } else {
-        scrollAnimFlg = 0;
-      }
-    }
+    // if(scroll > 160){
+    //   if(logoSizeFlg == 0){
+    //     $('.logo img').css({ 'width': '103px' }).on('transitionend',function(){
+    //       $('.logo img').off();
+    //       scrollAnimFlg = 0;
+    //     });
+    //     logoSizeFlg = 1;
+    //   } else {
+    //     scrollAnimFlg = 0;
+    //   }
+    // } else {
+    //   if(logoSizeFlg == 1){
+    //     $('.logo img').css({ 'width': '206px' }).on('transitionend',function(){
+    //       $('.logo img').off();
+    //       scrollAnimFlg = 0;
+    //     });
+    //     logoSizeFlg = 0;
+    //   } else {
+    //     scrollAnimFlg = 0;
+    //   }
+    // }
   }
 
   function staffButton(){
@@ -215,6 +225,7 @@ $(function(){
 
   var spMenuAnimFlg = 0;
   function spMenu(){
+    var path = location.pathname;
     if(spMenuAnimFlg == 1){ return; }
     if($('.sp-menu').hasClass('sp-menu--on')){
       spMenuClose();
@@ -226,26 +237,57 @@ $(function(){
           $('<div>').addClass('sp-menu-modal').append(
             $('<ul>').append(
               $('<li>').append(
-                $('<a>').attr('href','#top').text('TOP')
+                (path == "/") ? $('<a>').attr('href','#top').text('TOP') : $('<a>').attr('href','/#top').text('TOP')
               ),
               $('<li>').append(
-                $('<a>').attr('href','#section1').text('ABOUT')
+                path == "/" ? $('<a>').attr('href','#section1').text('ABOUT') : $('<a>').attr('href','/#section1').text('ABOUT')
               ),
               $('<li>').append(
-                $('<a>').attr('href','#section2').text('STORY')
-              ),
-              // $('<li>').append(
-              //   $('<a>').attr('href','#section3').text('PROFESSIONAL STAFF')
-              // ),
-              $('<li>').append(
-                $('<a>').attr('href','#section4').text('PRICE')
+                path == "/" ? $('<a>').attr('href','#section2').text('STORY') : $('<a>').attr('href','/#section2').text('STORY')
               ),
               $('<li>').append(
-                $('<a>').attr('href','#section5').text('PRODUCT SALES')
+                path == "/" ? $('<a>').attr('href','#section3').text('COURSE&PRICE') : $('<a>').attr('href','/#section3').text('COURSE&PRICE')
               ),
               $('<li>').append(
-                $('<a>').attr('href','#section6').text('OTHER INFORMATION')
-              )
+                path == "/" ? $('<a>').attr('href','#section4').text('RESERVATION') : $('<a>').attr('href','/#section4').text('RSERVATION')
+              ),
+              $('<li>').append(
+                path == "/" ? $('<a>').attr('href','#section5').text('ITEM LIST') : $('<a>').attr('href','/#section5').text('ITEM LIST'),
+                $('<ul>').addClass('sp_subnav').append(
+                  $('<li>').append(
+                    $('<form>').attr({action:'/product/product_list.php',method:'get'}).append(
+                      $('<input>').attr({type:'hidden',name:'category',value:'japanese'}),
+                      $('<input>').attr({type:'submit',value:''}),
+                      $('<p>').text('美容商材')
+                    )
+                  ),
+                  $('<li>').append(
+                    $('<form>').attr({action:'/product/product_list.php',method:'get'}).append(
+                      $('<input>').attr({type:'hidden',name:'category',value:'basicskincare'}),
+                      $('<input>').attr({type:'submit',value:''}),
+                      $('<p>').text('基礎化粧品')
+                    )
+                  ),
+                  $('<li>').append(
+                    $('<form>').attr({action:'/product/product_list.php',method:'get'}).append(
+                      $('<input>').attr({type:'hidden',name:'category',value:'tea'}),
+                      $('<input>').attr({type:'submit',value:''}),
+                      $('<p>').text('お茶')
+                    )
+                  ),
+                  $('<li>').append(
+                    $('<form>').attr({action:'/product/product_list.php',method:'get'}).append(
+                      $('<input>').attr({type:'hidden',name:'category',value:'supplement'}),
+                      $('<input>').attr({type:'submit',value:''}),
+                      $('<p>').text('サプリメント')
+                    )
+                  ),
+                )
+              ),
+              $('<li>').append(
+                path == "/" ? $('<a>').attr('href','#section6').text('OTHER INFORMATION') : $('<a>').attr('href','/#section6').text('OTHER INFORMATION')
+              ),
+              $('<li>').append($('<a>').attr({href: 'https//1cs.jp/jyo1120/n', target: '_blank'}).text('Web予約はこちら'))
             )
           )
         )
@@ -276,28 +318,43 @@ $(function(){
   }
 
   function pageScroll(e){
-    e.preventDefault();
-    var ua = navigator.userAgent;
-    if (ua.indexOf('iPhone') > 0 || ua.indexOf('Android') > 0 && ua.indexOf('Mobile') > 0 || ua.indexOf('iPad') > 0 || ua.indexOf('Android') > 0) {
-      var num = 80.5;
-    } else {
-      var num = 128;
-    }
-    var id = $(this).attr('href');
-    if(id == '#top'){
-      $("html,body").animate({scrollTop:0}, 300, 'swing');
-    } else {
-      $("html,body").animate({scrollTop:parseInt($(id).offset().top) - num}, 300, 'swing');
-    }
-    $('.sp-menu').removeClass('sp-menu--on');
-    $('.sp-menu-modal-shadow').removeClass('sp-menu-modal-shadow--open');
-    $('.sp-menu-modal').removeClass('sp-menu-modal--on').on('transitionend',function(){
-      $('.sp-menu-modal').off();
-      $('.sp-menu-modal-shadow').removeClass('sp-menu-modal-shadow--open').on('transitionend',function(){
+    var path = location.pathname;
+    console.log(path);
+    if(path == "/"){
+      e.preventDefault();
+      var ua = navigator.userAgent;
+      if (ua.indexOf('iPhone') > 0 || ua.indexOf('Android') > 0 && ua.indexOf('Mobile') > 0 || ua.indexOf('iPad') > 0 || ua.indexOf('Android') > 0) {
+        var num = 80.5;
+      } else {
+        var num = 128;
+      }
+      var id = $(this).attr('href');
+      if(id == '#top'){
+        $("html,body").animate({scrollTop:0}, 300, 'swing');
+      } else {
+        $("html,body").animate({scrollTop:parseInt($(id).offset().top) - num - 16}, 300, 'swing');
+      }
+      $('.sp-menu').removeClass('sp-menu--on');
+      $('.sp-menu-modal-shadow').removeClass('sp-menu-modal-shadow--open');
+      $('.sp-menu-modal').removeClass('sp-menu-modal--on').on('transitionend',function(){
         $('.sp-menu-modal').off();
-        $('.sp-menu-modal-shadow').remove();
-        spMenuAnimFlg = 0;
+        $('.sp-menu-modal-shadow').removeClass('sp-menu-modal-shadow--open').on('transitionend',function(){
+          $('.sp-menu-modal').off();
+          $('.sp-menu-modal-shadow').remove();
+          spMenuAnimFlg = 0;
+        });
       });
-    });
+    }
   }
-})
+
+  function rewirteURL(){
+    var path = location.pathname;
+    if(path == '/'){
+      history.replaceState('hogehoge_state', '', '/')
+    }
+  }
+
+  function spMenuLang() {
+    $('.lang').toggleClass('active');
+  }
+});
